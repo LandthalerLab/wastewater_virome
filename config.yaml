@@ -1,0 +1,16 @@
+# variables and data
+metadata: "data/metadata.tsv"
+fastq_dir: "/data/landthaler/Emanuel/ww_RNA_all/"
+result_dir: "output/"
+
+# reference
+reference: "/data/landthaler/genome_data/kaiju/nr_euk"
+rname: "nr_euk"
+
+# params
+kaiju_table_params: "-e -p -r genus"
+kaiju_addnames_params: "" 
+kaiju_params: "-v"
+
+# options
+remove_duplicates: TRUE
