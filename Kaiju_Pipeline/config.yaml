@@ -1,6 +1,6 @@
 # variables and data
 metadata: "data/metadata.tsv"
-fastq_dir: "/data/landthaler/Emanuel/ww_RNA_all/"
+fastq_dir: "/fast/AG_Landthaler/Projects/WasteWater/data/ww_RNA_all/"
 result_dir: "output/"
 
 # reference

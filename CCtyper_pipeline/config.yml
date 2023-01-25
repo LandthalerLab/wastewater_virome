@@ -1,0 +1,15 @@
+# variables and data
+metadata: "data/metadata.tsv"
+fastq_dir: "/fast/AG_Landthaler/Projects/WasteWater/data/trinity_contig_RNA/"
+result_dir: "output/"
+
+# reference
+reference_hmmer: "/data/landthaler/genome_data/cctyper/"
+
+# params
+number_of_folds_pyfasta: "15"
+cctyper_params: "--keep_tmp --prodigal meta"
+
+# queuing options
+qsub.default: ""
+qsub.cctyper: "-l m_mem_free=50G"

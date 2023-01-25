@@ -12,10 +12,6 @@ rule all:
 		summary = config['result_dir'] + "kaiju_summary.out"
 	params: 
 		qsub=config["qsub_default"]
-	
-### 
-# Duplicate Removal with cd-hit-dup (optional) ####
-###
 
 rule cd_hit_dup:
 	input:
@@ -59,10 +55,6 @@ rule cd_hit_dup_summary:
 	  config['result_dir'] + "all_dedup_summary.out"
 	script: 
 		"scripts/dedup_summary.py"
-		
-### 
-# Kaiju ####
-###
 
 # select fastq files, select files that exist
 def get_fastq_files(sample, readn):
@@ -95,9 +87,7 @@ rule kaiju_table:
 	params:
 		qsub=config["qsub_default"],
 		ref=config["reference"],
-		result_dir = config['result_dir'],
-		kaiju_addnames_params=config["kaiju_addnames_params"],
-		kaiju_table_params=config["kaiju_table_params"]
+		result_dir = config['result_dir']
 	output:
 		table = config['result_dir'] + "{sample}_kaiju_table.csv"
 	shell:
