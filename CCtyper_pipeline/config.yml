@@ -13,3 +13,7 @@ cctyper_params: "--keep_tmp --prodigal meta"
 # queuing options
 qsub.default: ""
 qsub.cctyper: "-l m_mem_free=50G"
+
+# command tools
+pyfasta: "~/.conda/envs/crisprcastyper/bin/pyfasta"
+cctyper: "~/.conda/envs/crisprcastyper/bin/cctyper"

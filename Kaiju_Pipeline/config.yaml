@@ -4,8 +4,8 @@ fastq_dir: "/fast/AG_Landthaler/Projects/WasteWater/data/ww_RNA_all/"
 result_dir: "output/"
 
 # reference
-reference: "/data/landthaler/genome_data/kaiju/nr_euk"
-rname: "nr_euk"
+reference_kaiju: "/data/landthaler/genome_data/kaiju/nr_euk"
+reference_kaiju_name: "nr_euk"
 
 # params
 kaiju_params: "-v"
@@ -17,3 +17,8 @@ remove_duplicates: TRUE
 qsub_default: ""
 qsub_kaiju: "-l m_mem_free=200G"
 qsub_kaiju_summary: "-l m_mem_free=50G"
+
+# command tools
+R: "~/.conda/envs/r-base-4.0/bin/Rscript"
+kaiju: "kaiju"
+cd-hit-dup: "cd-hit-dup"
