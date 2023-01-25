@@ -1,6 +1,6 @@
 # variables and data
 metadata: "data/metadata.tsv"
-fastq_dir: "/data/landthaler/Emanuel/ww_RNA_all/"
+fastq_dir: "/fast/AG_Landthaler/Projects/WasteWater/data/ww_RNA_all/"
 result_dir: "output/"
 
 # reference
@@ -8,9 +8,12 @@ reference: "/data/landthaler/genome_data/kaiju/nr_euk"
 rname: "nr_euk"
 
 # params
-kaiju_table_params: "-e -p -r genus"
-kaiju_addnames_params: "" 
 kaiju_params: "-v"
 
 # options
 remove_duplicates: TRUE
+
+# qsub params
+qsub_default: ""
+qsub_kaiju: "-l m_mem_free=200G"
+qsub_kaiju_summary: "-l m_mem_free=50G"

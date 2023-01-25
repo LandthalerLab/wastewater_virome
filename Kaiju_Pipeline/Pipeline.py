@@ -11,18 +11,14 @@ rule all:
 		dedup_summary = config['result_dir'] + "all_dedup_summary.out" if config["remove_duplicates"] else [],
 		summary = config['result_dir'] + "kaiju_summary.out"
 	params: 
-		qsub=""
-	
-### 
-# Duplicate Removal with cd-hit-dup (optional) ####
-###
+		qsub=config["qsub_default"]
 
 rule cd_hit_dup:
 	input:
                	read1 = lambda wildcards: config["fastq_dir"] + metadata.loc[wildcards.sample, "read1"],
                	read2 = lambda wildcards: config["fastq_dir"] + metadata.loc[wildcards.sample, "read2"]
 	params:
-		qsub="",
+		qsub=config["qsub_default"],
 		result_dir = config['result_dir'] 
 	output:
 		read1_nodup="fastq_files/{sample}_1_nodup.fastq",
@@ -53,16 +49,12 @@ rule cd_hit_dup_summary:
 	input:
 		dedup_summary = expand(config['result_dir'] + "{sample}_dedup_summary.out", sample = sample_set) if config["remove_duplicates"] else [],
 	params:
-		qsub="",
+		qsub=config["qsub_default"],
 		result_dir = config['result_dir']
 	output:
 	  config['result_dir'] + "all_dedup_summary.out"
 	script: 
 		"scripts/dedup_summary.py"
-		
-### 
-# Kaiju ####
-###
 
 # select fastq files, select files that exist
 def get_fastq_files(sample, readn):
@@ -78,7 +70,7 @@ rule kaiju:
 		read1 = lambda wildcards: get_fastq_files(wildcards.sample, "1"),
 		read2 = lambda wildcards: get_fastq_files(wildcards.sample, "2")
 	params:
-		qsub="-l m_mem_free=200G",
+		qsub=config["qsub_kaiju"],
 		ref=config["reference"],
 		rname=config["rname"], 
 		kaiju_params=config["kaiju_params"]
@@ -93,27 +85,21 @@ rule kaiju_table:
         input:
                 kaiju_out = config['result_dir'] + "{sample}_kaiju.out",
 	params:
-		qsub="",
+		qsub=config["qsub_default"],
 		ref=config["reference"],
-		result_dir = config['result_dir'],
-		kaiju_addnames_params=config["kaiju_addnames_params"],
-		kaiju_table_params=config["kaiju_table_params"]
+		result_dir = config['result_dir']
 	output:
 		table = config['result_dir'] + "{sample}_kaiju_table.csv"
 	shell:
 		'''
-		# kaiju-addTaxonNames {params.kaiju_addnames_params} -t {params.ref}/nodes.dmp -n {params.ref}/names.dmp -i {input.kaiju_out} -o {params.result_dir}/{wildcards.sample}_kaiju_names.out 	
-		# ~/.conda/envs/r-base-4.0/bin/Rscript scripts/kaiju_table.R {params.result_dir}/{wildcards.sample}_kaiju_names.out {output.table}
 		~/.conda/envs/r-base-4.0/bin/Rscript scripts/kaiju_table.R {input.kaiju_out} {output.table}
-		# kaiju2table {params.kaiju_table_params} -t {params.ref}/nodes.dmp -n {params.ref}/names.dmp -o {output.table} {params.result_dir}/{wildcards.sample}_kaiju_names.out
-		# rm {params.result_dir}/{wildcards.sample}_kaiju_names.out
 		'''
 
 rule kaiju_summary:
         input:
                 table = expand(config['result_dir'] + "{sample}_kaiju_table.csv", sample = sample_set)
 	params:
-		qsub="-l m_mem_free=50G"
+		qsub=config["qsub_kaiju_summary"]
 	output:
 		summary = config['result_dir'] + "kaiju_summary.out"
 	shell:
