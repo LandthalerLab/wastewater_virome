@@ -25,6 +25,7 @@ rule divide_fasta:
                 read = lambda wildcards: config["fastq_dir"] + metadata.loc[wildcards.sample, "read"]
         params:
                 qsub = config['qsub.default'],
+                pyfasta = config["pyfasta"],
                 nfolds = config['number_of_folds_pyfasta']
         output:
                 temp(expand("fasta_files/{{sample}}.{fold}.fasta", fold = pyfasta_fold_indices))
@@ -32,7 +33,7 @@ rule divide_fasta:
                 '''
                 mkdir -p fasta_files
                 ln -s {input.read} fasta_files/{wildcards.sample}.fasta
-                ~/.conda/envs/crisprcastyper/bin/pyfasta split -n {params.nfolds} fasta_files/{wildcards.sample}.fasta
+                {params.pyfasta} split -n {params.nfolds} fasta_files/{wildcards.sample}.fasta
         
                 # rm intermediate files
                 rm fasta_files/{wildcards.sample}.fasta.flat
@@ -44,17 +45,17 @@ rule run_cctyper:
                 read = "fasta_files/{sample}.{fold}.fasta"
         params:
                 qsub = config['qsub.cctyper'],
+                cctyper = config["cctyper"],
+                cctyper_params = config["cctyper_params"],
                 result_dir = config["result_dir"],
-                reference_hmmer = config["reference_hmmer"],
-                cctyper_params = config["cctyper_params"]
+                reference_hmmer = config["reference_hmmer"]
         output:
                 sample_fold_hmmer = temp(config["result_dir"] + "{sample}_fold{fold}_hmmer.tab")
         shell:
                 '''
-                export PATH="$HOME/.conda/envs/crisprcastyper/bin/:$PATH"
                 mkdir -p {params.result_dir}
                 export CCTYPER_DB="{params.reference_hmmer}"
-                cctyper {input.read} {params.result_dir}/{wildcards.sample}_{wildcards.fold} {params.cctyper_params}   
+                {params.cctyper} {input.read} {params.result_dir}/{wildcards.sample}_{wildcards.fold} {params.cctyper_params}   
                 cp {params.result_dir}/{wildcards.sample}_{wildcards.fold}/hmmer.tab {output.sample_fold_hmmer}
                 '''
 
@@ -71,4 +72,6 @@ rule aggregate_run_cctyper:
                 head -1 ${{array[0]}} > {output.sample_hmmer} 
                 for fold in "${{array[@]}}"
                 do
+                  sed '1d' $fold >> {output.sample_hmmer} 
+                done
                 '''
