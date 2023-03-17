@@ -86,12 +86,16 @@ ggplot(data=kingdom_stats, aes(x=gsub("WW_","", sample),
   guides(fill=guide_legend(title="Super Kingdom")) 
 
 ###
-# Low Filter Count ####
+# Low Count Filtering ####
 ###
 
 # quality filtering
 datax_max_count <- apply(datax, 1, max)
 datax_highcount <- datax[datax_max_count > 10, ]
+
+###
+# Process Data ####
+###
 
 # normalize count matrix, hellinger norm without unassigned
 datax_norm <- apply(datax_highcount[!rownames(datax_highcount) %in% c("0","1","2","10239","2759","2157"),], 2, function(x){
