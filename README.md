@@ -17,7 +17,7 @@ This repository incorporates two pipelines for RNA and DNA samples generated fro
 
 In addition to preprocessing pipelines, we also provide access to custom scripts for the downstream analysis for both taxonomy classification and Cas protein detection:
 
-* Metagenomic Analysis:
+* Metagenomic Analysis on taxonomically classified reads:
   - taxonomy ranks and lineage with [taxizedb](https://cran.r-project.org/web/packages/taxizedb/index.html) package 
   - Processing and PCA of taxonomy counts
   - Visualize heatmaps with [ComplexHeatmap](https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html) package
