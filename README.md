@@ -1,8 +1,8 @@
-# Pipelines and Scripts for Wyler, E. et al. 2022
+# Pipelines and Scripts for Wyler, E. et al. 2024
 
-Wyler, E., Lauber, C., Manukyan, A., Deter, A., Quedenau, C., Teixeira Alves, L. G., ... & Landthaler, M. (2022). Comprehensive profiling of wastewater viromes by genomic sequencing. bioRxiv, 2022-12. 
+Wyler, E., Lauber, C., Manukyan, A., Deter, A., Quedenau, C., Alves, L. G. T., ... & Landthaler, M. (2024). Pathogen dynamics and discovery of novel viruses and enzymes by deep nucleic acid sequencing of wastewater. Environment International, 108875.
 
-**DOI**: [https://doi.org/10.1101/2022.12.16.520800](https://doi.org/10.1101/2022.12.16.520800)
+**DOI**: [https://doi.org/10.1016/j.envint.2024.108875](https://doi.org/10.1016/j.envint.2024.108875)
 
 This repository incorporates two pipelines for RNA and DNA samples generated from wastewater: 
 
